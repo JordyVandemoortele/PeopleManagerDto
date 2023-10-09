@@ -3,6 +3,7 @@ using PeopleManager.Core;
 using PeopleManager.Dto.Requests;
 using PeopleManager.Dto.Results;
 using PeopleManager.Model;
+using PeopleManager.Services.Extensions;
 
 namespace PeopleManager.Services
 {
@@ -21,15 +22,7 @@ namespace PeopleManager.Services
             return await _dbContext.People
                 .OrderBy(p => p.FirstName)
                 .ThenBy(p => p.LastName)
-                .Select(p => new PersonResult
-                {
-                    Id = p.Id,
-                    FirstName = p.FirstName,
-                    LastName = p.LastName,
-                    Email = p.Email,
-                    Description = p.Description,
-                    NumberOfResponsibleVehicles = p.ResponsibleForVehicles.Count
-                })
+                .ProjectToPersonResult()
                 .ToListAsync();
         }
 
@@ -37,15 +30,7 @@ namespace PeopleManager.Services
         public async Task<PersonResult?> GetAsync(int id)
         {
             return await _dbContext.People
-                .Select(p => new PersonResult
-                {
-                    Id = p.Id,
-                    FirstName = p.FirstName,
-                    LastName = p.LastName,
-                    Email = p.Email,
-                    Description = p.Description,
-                    NumberOfResponsibleVehicles = p.ResponsibleForVehicles.Count
-                })
+                .ProjectToPersonResult()
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
