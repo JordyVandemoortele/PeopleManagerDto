@@ -22,7 +22,7 @@ namespace PeopleManager.Services
             return await _dbContext.People
                 .OrderBy(p => p.FirstName)
                 .ThenBy(p => p.LastName)
-                .ProjectToPersonResult()
+                .ProjectToResults()
                 .ToListAsync();
         }
 
@@ -30,7 +30,7 @@ namespace PeopleManager.Services
         public async Task<PersonResult?> GetAsync(int id)
         {
             return await _dbContext.People
-                .ProjectToPersonResult()
+                .ProjectToResults()
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 

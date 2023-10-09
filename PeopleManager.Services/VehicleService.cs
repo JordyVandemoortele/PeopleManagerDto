@@ -3,6 +3,7 @@ using PeopleManager.Core;
 using PeopleManager.Dto.Requests;
 using PeopleManager.Dto.Results;
 using PeopleManager.Model;
+using PeopleManager.Services.Extensions;
 
 namespace PeopleManager.Services
 {
@@ -19,16 +20,7 @@ namespace PeopleManager.Services
         public async Task<IList<VehicleResult>> FindAsync()
         {
             return await _dbContext.Vehicles
-                .Select(v => new VehicleResult
-                {
-                    Id = v.Id,
-                    LicensePlate = v.LicensePlate,
-                    Brand = v.Brand,
-                    Type = v.Type,
-                    ResponsiblePersonId = v.ResponsiblePersonId,
-                    ResponsiblePersonFirstName = v.ResponsiblePerson.FirstName,
-                    ResponsiblePersonLastName = v.ResponsiblePerson.LastName
-                })
+                .ProjectToResults()
                 .ToListAsync();
         }
 
@@ -36,16 +28,7 @@ namespace PeopleManager.Services
         public async Task<VehicleResult?> GetAsync(int id)
         {
             return await _dbContext.Vehicles
-                .Select(v => new VehicleResult
-                {
-                    Id = v.Id,
-                    LicensePlate = v.LicensePlate,
-                    Brand = v.Brand,
-                    Type = v.Type,
-                    ResponsiblePersonId = v.ResponsiblePersonId,
-                    ResponsiblePersonFirstName = v.ResponsiblePerson.FirstName,
-                    ResponsiblePersonLastName = v.ResponsiblePerson.LastName
-                })
+                .ProjectToResults()
                 .FirstOrDefaultAsync(v => v.Id == id);
         }
 

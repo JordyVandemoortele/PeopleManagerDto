@@ -5,7 +5,7 @@ namespace PeopleManager.Services.Extensions
 {
     public static class queryableExtensions
     {
-        public static IQueryable<PersonResult> ProjectToPersonResult(this IQueryable<Person> query)
+        public static IQueryable<PersonResult> ProjectToResults(this IQueryable<Person> query)
         {
             return query
                  .Select(p => new PersonResult
@@ -16,6 +16,20 @@ namespace PeopleManager.Services.Extensions
                      Email = p.Email,
                      Description = p.Description,
                      NumberOfResponsibleVehicles = p.ResponsibleForVehicles.Count
+                 });
+        }
+        public static IQueryable<VehicleResult> ProjectToResults(this IQueryable<Vehicle> query)
+        {
+            return query
+                 .Select(v => new VehicleResult
+                 {
+                     Id = v.Id,
+                     LicensePlate = v.LicensePlate,
+                     Brand = v.Brand,
+                     Type = v.Type,
+                     ResponsiblePersonId = v.ResponsiblePersonId,
+                     ResponsiblePersonFirstName = v.ResponsiblePerson.FirstName,
+                     ResponsiblePersonLastName = v.ResponsiblePerson.LastName
                  });
         }
     }
